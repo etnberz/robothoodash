@@ -1,0 +1,2 @@
+include robothoodash/py.typed
+include robothoodash/config/log_config.json
