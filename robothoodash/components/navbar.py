@@ -31,6 +31,15 @@ navbar = dbc.Navbar(
                         ),
                         align="center",
                     ),
+                    dbc.Col(
+                        dbc.Nav(
+                            html.Div([html.Button("BTC"),
+                            html.Button("USDT")], className="base-currency-button"),
+                            className="ml-auto",
+                            navbar=True,
+                        ),
+                        align="right",
+                    ),
                 ],
                 align="center",
             ),
