@@ -26,12 +26,10 @@ CONTENT_STYLE = {
 
 content = html.Div(
     [
-        html.H2(
-            "Base Currencies Balances",
-            style={"padding-top": "5rem"},
-        ),
         dcc.Graph(
-            id="line-balance-usdt", figure=plot_manager.plot_line_balance(base_currency="usdt")
+            id="lineplot-base-currency-balance",
+            figure=plot_manager.lineplot_base_currency_balance(base_currency="usdt"),
+            style={"padding-top": "5rem"}
         ),
     ]
 )

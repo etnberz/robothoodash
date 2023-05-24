@@ -12,7 +12,7 @@ class PlotManager:
         duckdb.load_extension(extension="sqlite_scanner")
         self.con = duckdb.connect(os.environ["ROBOTHOOD_DB_PATH"])
 
-    def plot_line_balance(self, base_currency: str) -> Figure:
+    def lineplot_base_currency_balance(self, base_currency: str) -> Figure:
         """Plot the balance of base currency on a time line
 
         Parameters
@@ -27,10 +27,12 @@ class PlotManager:
 
         """
         return px.line(
-            self.con.sql(f"""SELECT {base_currency}_balance FROM tracker""").pl()
+            self.con.sql(f"""SELECT timestamp, {base_currency}_balance FROM tracker""").df(),
+            x="timestamp",
+            y=f"{base_currency.lower()}_balance",
+            title=f"{base_currency.upper()} Balance Evolution",
         ).update_layout(
-            title="YOOO",
-            xaxis_title="Time",
+            xaxis_title="",
             yaxis_title=f"{base_currency.upper()} Balance",
             showlegend=False,
             hovermode="x",
