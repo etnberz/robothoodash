@@ -1,11 +1,9 @@
-import os
-
 import dash_bootstrap_components as dbc
 import flask
 from dash import Dash, dcc, html
 
 from robothoodash.components.navbar import navbar
-from robothoodash.visualization.plot_manager import PlotManager
+from robothoodash.components.page_content import page_content
 
 server = flask.Flask(__name__)
 app = Dash(
@@ -15,24 +13,11 @@ app = Dash(
     suppress_callback_exceptions=True,
     title="RobotHooDash",
 )
-os.environ["ROBOTHOOD_DB_PATH"] = "/home/maxime/code/robothood/database/robothood.db"
-
-plot_manager = PlotManager()
 
 CONTENT_STYLE = {
     "margin-right": "2rem",
     "padding": "2rem 1rem",
 }
-
-content = html.Div(
-    [
-        dcc.Graph(
-            id="lineplot-base-currency-balance",
-            figure=plot_manager.lineplot_base_currency_balance(base_currency="usdt"),
-            style={"padding-top": "5rem"}
-        ),
-    ]
-)
 
 app.layout = html.Div(
     [
@@ -40,7 +25,7 @@ app.layout = html.Div(
         navbar,
         dbc.Container(
             [
-                content,
+                page_content,
             ],
             fluid=True,
         ),

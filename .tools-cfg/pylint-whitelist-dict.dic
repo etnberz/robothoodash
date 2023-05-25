@@ -37,6 +37,7 @@ buffererror
 builtin
 builtins
 bumpversion
+btc
 bytesio
 byteswarning
 cache
@@ -344,6 +345,7 @@ unstack
 untyped
 url
 urllib
+usdt
 userwarning
 utils
 uuid

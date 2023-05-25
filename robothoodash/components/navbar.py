@@ -5,6 +5,10 @@ ROBOTHOOD_LOGO = (
     "https://raw.githubusercontent.com/etnberz/dummy_robothood/master/static/img/robothood.png"
 )
 
+ROBOTHOOD_LINK = (
+    "https://medium.com/@maxime.caitucoli/a-crypto-trading-bot-for-the-greater-good-1e04cb7bbe54"
+)
+
 # pylint:disable=unused-variable
 
 navbar = dbc.Navbar(
@@ -16,7 +20,7 @@ navbar = dbc.Navbar(
                     dbc.Col(
                         html.A(
                             html.Img(src=ROBOTHOOD_LOGO, height="80px"),
-                            href="https://medium.com/@maxime.caitucoli/a-crypto-trading-bot-for-the-greater-good-1e04cb7bbe54",
+                            href=ROBOTHOOD_LINK,
                         ),
                         align="center",
                     ),
@@ -33,10 +37,23 @@ navbar = dbc.Navbar(
                     ),
                     dbc.Col(
                         dbc.Nav(
-                            html.Div([html.Button("BTC"),
-                            html.Button("USDT")], className="base-currency-button"),
-                            className="ml-auto",
-                            navbar=True,
+                            html.Div(
+                                [
+                                    dbc.RadioItems(
+                                        id="radios-base-currency-selector",
+                                        className="btn-group",
+                                        inputClassName="btn-check",
+                                        labelClassName="btn btn-outline-primary",
+                                        labelCheckedClassName="active",
+                                        options=[
+                                            {"label": "BTC", "value": "btc"},
+                                            {"label": "USDT", "value": "usdt"},
+                                        ],
+                                        value="btc",
+                                    ),
+                                ],
+                                className="radio-group",
+                            )
                         ),
                         align="right",
                     ),
