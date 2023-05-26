@@ -4,7 +4,24 @@ A dashboard which monitors the performances of RobotHood
 
 ## Installation
 
+To run the dashboard, you will need to set the environment variables:
+ROBOTHOOD_DB_PATH: path to the robothood db.
+
+You can install robothoodash localy by running in the robothoodash repository:
+
+`pip install .`
+
 ## Quickstart
+
+First build the docker image:
+
+`docker build -t robothoodash .`
+
+If you are in the robothoodash folder else, change . by the correct location.
+
+To make it run:
+
+`docker run -e ROBOTHOOD_DB_PATH=$ROBOTHOOD_DB_PATH robothoodash robothoodash/app.py
 
 
 ## Project status
