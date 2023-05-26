@@ -24,7 +24,7 @@ def lineplot_base_currency_balance(data: pd.DataFrame, base_currency: str) -> Fi
     return px.line(
         data,
         x="timestamp",
-        y=f"{base_currency.lower()}_balance",
+        y=f"{base_currency}_balance",
         title=f"{base_currency.upper()} Balance Evolution",
     ).update_layout(
         xaxis_title="",

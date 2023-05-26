@@ -10,5 +10,5 @@ def pytest_configure(config):
 @pytest.fixture(autouse=True)
 def mock_env_variables(request):
     if not request.node.get_closest_marker("no_profiling"):
-        os.environ['ROBOTHOOD_DB_PATH'] = ""
+        os.environ["ROBOTHOOD_DB_PATH"] = ""
     yield

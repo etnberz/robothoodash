@@ -3,7 +3,7 @@ from dash.dependencies import Input, Output
 from plotly.graph_objs import Figure
 
 from robothoodash.hoodapi.hoodapi import HoodApi
-from robothoodash.visualization.plot_manager import lineplot_base_currency_balance
+from robothoodash.visualization.plot_functions import lineplot_base_currency_balance
 
 # pylint:disable=unused-variable
 page_content = html.Div(
