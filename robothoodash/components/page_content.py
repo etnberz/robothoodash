@@ -9,7 +9,6 @@ from robothoodash.visualization.plot_functions import (
     plot_open_orders_table,
 )
 
-
 # pylint:disable=unused-variable
 page_content = dbc.Row(
     [
