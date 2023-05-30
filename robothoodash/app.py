@@ -1,6 +1,9 @@
 import dash_bootstrap_components as dbc
 import flask
-from dash import Dash, html
+from dash import Dash, dcc, html
+
+from robothoodash.components.navbar import navbar
+from robothoodash.components.page_content import page_content
 
 server = flask.Flask(__name__)
 app = Dash(
@@ -11,13 +14,23 @@ app = Dash(
     title="RobotHooDash",
 )
 
+CONTENT_STYLE = {
+    "margin-right": "2rem",
+    "padding": "2rem 1rem",
+}
+
 app.layout = html.Div(
     [
-        html.H2(
-            "Welcome to RobotHooDash: quite naked now, see future versions for more content",
-            style={"padding-top": "5rem"},
-        )
-    ]
+        dcc.Location(id="url"),
+        navbar,
+        dbc.Container(
+            [
+                page_content,
+            ],
+            fluid=True,
+        ),
+    ],
+    style=CONTENT_STYLE,
 )
 
 if __name__ == "__main__":
