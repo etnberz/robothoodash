@@ -9,6 +9,8 @@ ALLOWED_BASE_CURRENCY = ["btc", "usdt"]
 
 GET_BTC_BALANCE_TS = """SELECT timestamp, btc_balance FROM tracker"""
 GET_USDT_BALANCE_TS = """SELECT timestamp, usdt_balance FROM tracker"""
+GET_OPEN_ORDERS = """SELECT pair, quantity, strategy, target_1, target_2, status
+                     FROM trading_signal WHERE open"""
 
 
 class HoodApi:
@@ -42,3 +44,14 @@ class HoodApi:
             )
         query = GET_BTC_BALANCE_TS if base_currency == "btc" else GET_USDT_BALANCE_TS
         return self.con.execute(query=query).df()
+
+    def get_open_orders(self) -> pd.DataFrame:
+        """Get open trading orders
+
+        Returns
+        -------
+        pd.DataFrame
+            The open trading orders as a dataframe
+
+        """
+        return self.con.execute(query=GET_OPEN_ORDERS).df()

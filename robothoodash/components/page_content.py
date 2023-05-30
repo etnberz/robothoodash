@@ -1,14 +1,27 @@
-from dash import callback, dcc, html
+import dash_bootstrap_components as dbc
+from dash import callback, dcc
 from dash.dependencies import Input, Output
 from plotly.graph_objs import Figure
 
 from robothoodash.hoodapi.hoodapi import HoodApi
-from robothoodash.visualization.plot_functions import lineplot_base_currency_balance
+from robothoodash.visualization.plot_functions import (
+    lineplot_base_currency_balance,
+    plot_open_orders_table,
+)
+
 
 # pylint:disable=unused-variable
-page_content = html.Div(
+page_content = dbc.Row(
     [
-        dcc.Graph(id="lineplot-base-currency-balance", figure={}, style={"padding-top": "5rem"}),
+        dbc.Col(
+            dcc.Graph(
+                id="lineplot-base-currency-balance", figure={}, style={"padding-top": "5rem"}
+            ),
+        ),
+        dbc.Col(
+            plot_open_orders_table(data=HoodApi().get_open_orders()),
+            style={"padding-top": "9rem"},
+        ),
     ]
 )
 
