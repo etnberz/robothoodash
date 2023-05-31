@@ -28,7 +28,7 @@ TEST_DATA_ORDERS = pd.read_parquet(TEST_DATA_PATH / "open_order_test_data.parque
     ids=["BTC", "USDT"],
 )
 def test_get_balance_data_base_currency(
-        mocker, tracker, base_currency
+    mocker, tracker, base_currency
 ):  # pylint:disable=unused-argument
     mocker.patch("robothoodash.hoodapi.hoodapi.duckdb.connect", return_value=duckdb.connect())
     hood_api = HoodApi()
