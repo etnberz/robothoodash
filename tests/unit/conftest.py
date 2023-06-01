@@ -1,24 +1,12 @@
-import os
-
 import duckdb
 import pandas as pd
 import pytest
 
 from robothoodash.hoodapi.hoodapi import GET_BTC_BALANCE_TS, GET_USDT_BALANCE_TS
 
-
-def pytest_configure(config):
-    config.addinivalue_line("markers", "no_env_var: mark test to not use env var mock")
-
-
-@pytest.fixture(autouse=True)
-def mock_env_variables(request):
-    if not request.node.get_closest_marker("no_profiling"):
-        os.environ["ROBOTHOOD_DB_PATH"] = ""
-    yield
-
-
 # Mock DuckDB connection for testing
+
+
 class MockDuckDBConnection:
     def __init__(self):
         self.data = {
