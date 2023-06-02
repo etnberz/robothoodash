@@ -1,4 +1,3 @@
-import os
 from contextvars import copy_context
 
 import pytest
@@ -13,8 +12,7 @@ from robothoodash.hoodapi.hoodapi import ALLOWED_BASE_CURRENCY
 @pytest.mark.parametrize("base_currency", ALLOWED_BASE_CURRENCY, ids=ALLOWED_BASE_CURRENCY)
 def test_lineplot_base_currency_balance_callback(
     mock_duckdb_connection, mock_env_variables, base_currency
-):  # pylint:disable=unused-argument
-
+):  # pylint:disable=unused-argument,pointless-statement
     def run_callback():
         context_value.set(
             AttributeDict(
