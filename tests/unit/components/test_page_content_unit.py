@@ -14,7 +14,6 @@ from robothoodash.hoodapi.hoodapi import ALLOWED_BASE_CURRENCY
 def test_lineplot_base_currency_balance_callback(
     mock_duckdb_connection, mock_env_variables, base_currency
 ):  # pylint:disable=unused-argument
-    os.environ["ROBOTHOOD_DB_PATH"] = ""
 
     def run_callback():
         context_value.set(
@@ -22,6 +21,8 @@ def test_lineplot_base_currency_balance_callback(
                 **{"triggered_inputs": [{"prop_id": "radios-base-currency-selector.value"}]}
             )
         )
+        mock_duckdb_connection
+        mock_env_variables
         return lineplot_base_currency_balance_callback(base_currency=base_currency)
 
     ctx = copy_context()
