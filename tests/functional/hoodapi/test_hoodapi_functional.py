@@ -31,8 +31,8 @@ def test_get_balance_data_base_currency(
     mocker, tracker, base_currency
 ):  # pylint:disable=unused-argument
     mocker.patch("robothoodash.hoodapi.hoodapi.duckdb.connect", return_value=duckdb.connect())
-    hood_api = HoodApi()
-    result = hood_api.get_balance_data(base_currency=base_currency)
+    hood_api = HoodApi(base_currency=base_currency)
+    result = hood_api.get_balance_data()
     expected_result = (
         TEST_DATA_TRACKER[["timestamp", "btc_balance"]]
         if base_currency == "btc"
@@ -41,12 +41,16 @@ def test_get_balance_data_base_currency(
     pd.testing.assert_frame_equal(left=result, right=expected_result)
 
 
-def test_get_open_orders(mocker):  # pylint:disable=unused-argument
-    trading_signal = TEST_DATA_ORDERS
+@pytest.mark.parametrize(
+    "base_currency, trading_signal",
+    [("btc", TEST_DATA_ORDERS), ("usdt", TEST_DATA_ORDERS)],
+    ids=["BTC", "USDT"],
+)
+def test_get_open_orders(mocker, base_currency, trading_signal):  # pylint:disable=unused-argument
     mocker.patch("robothoodash.hoodapi.hoodapi.duckdb.connect", return_value=duckdb.connect())
-    hood_api = HoodApi()
+    hood_api = HoodApi(base_currency=base_currency)
     result = hood_api.get_open_orders()
-    expected_result = trading_signal[trading_signal["open"] == 1][
-        ["pair", "quantity", "strategy", "target_1", "target_2", "status"]
-    ].reset_index(drop=True)
+    expected_result = trading_signal[
+        (trading_signal["open"] == 1) & (trading_signal["base_currency"] == base_currency.upper())
+    ][["pair", "quantity", "strategy", "target_1", "target_2", "status"]].reset_index(drop=True)
     pd.testing.assert_frame_equal(left=result, right=expected_result)
