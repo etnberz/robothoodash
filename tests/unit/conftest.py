@@ -19,6 +19,7 @@ TEST_DATA = Path(__file__).parent.parent / "functional" / "data" / "open_order_t
 
 class MockDuckDBConnection:
     def __init__(self):
+        open_orders = pd.read_parquet(TEST_DATA)
         self.data = {
             GET_BTC_BALANCE_TS: pd.DataFrame(
                 {"timestamp": [1, 2, 3], "btc_balance": [0.5, 0.6, 0.7]}
@@ -26,8 +27,8 @@ class MockDuckDBConnection:
             GET_USDT_BALANCE_TS: pd.DataFrame(
                 {"timestamp": [1, 2, 3], "usdt_balance": [1000, 1200, 1500]}
             ),
-            GET_BTC_OPEN_ORDERS: pd.read_parquet(TEST_DATA),
-            GET_USDT_OPEN_ORDERS: pd.read_parquet(TEST_DATA),
+            GET_BTC_OPEN_ORDERS: open_orders[open_orders["base_currency"] == "BTC"],
+            GET_USDT_OPEN_ORDERS: open_orders[open_orders["base_currency"] == "USDT"],
         }
 
     def execute(self, query):

@@ -1,5 +1,6 @@
 from contextvars import copy_context
 
+import pandas as pd
 import pytest
 from dash._callback_context import context_value
 from dash._utils import AttributeDict
@@ -46,3 +47,4 @@ def test_plot_open_orders_table_callback(
     ctx = copy_context()
     output = ctx.run(run_callback)
     assert isinstance(output, DataTable)
+    assert all(pd.DataFrame(output.data)["base_currency"] == base_currency.upper())
