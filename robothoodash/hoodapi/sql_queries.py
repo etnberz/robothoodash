@@ -74,7 +74,7 @@ GET_USDT_PROFIT_DAY = """SELECT
                SUM(diff) AS usdt_profit
                FROM (
                     SELECT
-                    btc_balance - LAG(btc_balance) over (ORDER BY timestamp) AS diff,
+                    usdt_balance - LAG(usdt_balance) over (ORDER BY timestamp) AS diff,
                     STRFTIME(timestamp, '%d - %m - %Y') AS timestr
                     FROM tracker
                     )
@@ -83,11 +83,13 @@ GET_USDT_PROFIT_DAY = """SELECT
 
 HOODAPI_QUERIES = [
     GET_BTC_BALANCE_TS,
-    GET_USDT_BALANCE_TS,
     GET_BTC_OPEN_ORDERS,
-    GET_USDT_OPEN_ORDERS,
+    GET_BTC_PROFIT_DAY,
     GET_BTC_PROFIT_MONTH,
-    GET_USDT_PROFIT_MONTH,
     GET_BTC_PROFIT_WEEK,
+    GET_USDT_BALANCE_TS,
+    GET_USDT_OPEN_ORDERS,
+    GET_USDT_PROFIT_DAY,
+    GET_USDT_PROFIT_MONTH,
     GET_USDT_PROFIT_WEEK,
 ]
