@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import plotly.express as px
 from dash import dash_table
@@ -65,4 +66,39 @@ def plot_open_orders_table(data: pd.DataFrame) -> DataTable:
             "textAlign": "center",
             "color": "white",
         },
+    )
+
+
+def barplot_profit(data: pd.DataFrame, base_currency: str) -> Figure:
+    """Plot the profit bar-plot
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The time series data needed to plot the currency balance
+    base_currency: str
+        The base currency, either BTC or USDT
+
+    Returns
+    -------
+    Figure
+        The balance of base currency on a time line plot
+    """
+    profit = f"{base_currency}_profit"
+    return px.bar(
+        data_frame=data,
+        x="period",
+        y=profit,
+        title=f"{base_currency.upper()} Profit Loss Graph",
+        color=np.where(data[profit] >= 0, "green", "red"),
+        color_discrete_map={"red": "#eb2a2a", "green": "#4deb2a"},
+        hover_data={
+            "period": True,
+            profit: ":.6f",
+        },
+    ).update_layout(
+        xaxis_title="",
+        yaxis_title=f"{base_currency.upper()} Profit",
+        showlegend=False,
+        hovermode="x",
     )
