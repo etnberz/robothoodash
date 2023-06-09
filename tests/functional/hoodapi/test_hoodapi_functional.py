@@ -13,9 +13,9 @@ TEST_DATA_PATH = Path(__file__).parent.parent / "data"
 
 TEST_DATA_TRACKER = pd.DataFrame(
     {
-        "timestamp": pd.date_range(start="2023-05-25 00:00", freq="H", periods=24),
-        "btc_balance": np.random.normal(loc=0.07, scale=0.004, size=24),
-        "usdt_balance": np.random.normal(loc=1000, scale=20, size=24),
+        "timestamp": pd.date_range(start="2023-05-25 00:00", freq="H", periods=1000),
+        "btc_balance": np.random.normal(loc=0.07, scale=0.004, size=1000),
+        "usdt_balance": np.random.normal(loc=1000, scale=20, size=1000),
     }
 )
 
@@ -53,4 +53,38 @@ def test_get_open_orders(mocker, base_currency, trading_signal):  # pylint:disab
     expected_result = trading_signal[
         (trading_signal["open"] == 1) & (trading_signal["base_currency"] == base_currency.upper())
     ][["pair", "quantity", "strategy", "target_1", "target_2", "status"]].reset_index(drop=True)
+    pd.testing.assert_frame_equal(left=result, right=expected_result)
+
+
+@pytest.mark.parametrize(
+    "base_currency, granularity, tracker",
+    [
+        ("btc", "day", TEST_DATA_TRACKER),
+        ("usdt", "day", TEST_DATA_TRACKER),
+        ("btc", "week", TEST_DATA_TRACKER),
+        ("usdt", "week", TEST_DATA_TRACKER),
+        ("btc", "month", TEST_DATA_TRACKER),
+        ("usdt", "month", TEST_DATA_TRACKER),
+    ],
+)
+def test_get_profit(mocker, tracker, granularity, base_currency):  # pylint:disable=unused-argument
+    mocker.patch("robothoodash.hoodapi.hoodapi.duckdb.connect", return_value=duckdb.connect())
+    hood_api = HoodApi(base_currency=base_currency)
+    result = hood_api.get_profit(granularity=granularity)
+
+    FREQ = {"day": "D", "month": "MS", "week": "W"}
+
+    balance = f"{base_currency}_balance"
+    expected_result = TEST_DATA_TRACKER[["timestamp", balance]]
+    expected_result[f"{base_currency}_profit"] = expected_result[balance].diff()
+    expected_result = (
+        expected_result.groupby(
+            pd.Grouper(key="timestamp", freq=FREQ[granularity], convention="s")
+        )
+        .sum()
+        .drop(balance, axis=1)
+        .reset_index()
+        .rename({"timestamp": "period"}, axis=1)
+    )
+
     pd.testing.assert_frame_equal(left=result, right=expected_result)

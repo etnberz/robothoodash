@@ -24,9 +24,7 @@ app.layout = html.Div(
         dcc.Location(id="url"),
         navbar,
         dbc.Container(
-            [
-                page_content,
-            ],
+            page_content,
             fluid=True,
         ),
     ],

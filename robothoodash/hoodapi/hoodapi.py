@@ -6,8 +6,14 @@ import pandas as pd
 from robothoodash.hoodapi.sql_queries import (
     GET_BTC_BALANCE_TS,
     GET_BTC_OPEN_ORDERS,
+    GET_BTC_PROFIT_DAY,
+    GET_BTC_PROFIT_MONTH,
+    GET_BTC_PROFIT_WEEK,
     GET_USDT_BALANCE_TS,
     GET_USDT_OPEN_ORDERS,
+    GET_USDT_PROFIT_DAY,
+    GET_USDT_PROFIT_MONTH,
+    GET_USDT_PROFIT_WEEK,
 )
 
 # pylint:disable=unused-variable,too-few-public-methods
@@ -63,4 +69,21 @@ class HoodApi:
 
         """
         query = GET_BTC_OPEN_ORDERS if self.base_currency == "btc" else GET_USDT_OPEN_ORDERS
+        return self.con.execute(query=query).df()
+
+    def get_profit(self, granularity: str) -> pd.DataFrame:
+        """Get open trading orders for a given base currency
+
+        Returns
+        -------
+        pd.DataFrame
+            The open trading orders as a dataframe
+
+        """
+        if granularity == "month":
+            query = GET_BTC_PROFIT_MONTH if self.base_currency == "btc" else GET_USDT_PROFIT_MONTH
+        elif granularity == "week":
+            query = GET_BTC_PROFIT_WEEK if self.base_currency == "btc" else GET_USDT_PROFIT_WEEK
+        else:
+            query = GET_BTC_PROFIT_DAY if self.base_currency == "btc" else GET_USDT_PROFIT_DAY
         return self.con.execute(query=query).df()
